@@ -8,7 +8,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors({
-  origin: ['http://localhost:5174', 'https://tmaps-six.vercel.app/', process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null].filter(Boolean),
+  origin: ['http://localhost:5174', 'https://cureconnect-maps.vercel.app', process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null].filter(Boolean),
   credentials: true
 }));
 app.use(express.json());
