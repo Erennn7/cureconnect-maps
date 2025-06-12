@@ -39,24 +39,24 @@ const HospitalMap = ({ userLocation, hospitals, medicalStores, showMedicalStores
             const address = results[0].formatted_address;
             
             // Show confirmation with the address
-            if (infoWindowInstance) {
-              infoWindowInstance.setContent(`
-                <div class="info-window update-location">
-                  <h3>Update your location?</h3>
+        if (infoWindowInstance) {
+          infoWindowInstance.setContent(`
+            <div class="info-window update-location">
+              <h3>Update your location?</h3>
                   <p>${address}</p>
                   <p class="location-accuracy-note">This will be a precise location</p>
-                  <button id="confirm-location-update" class="location-confirm-button">Yes, Update</button>
-                  <button id="cancel-location-update" class="location-cancel-button">Cancel</button>
-                </div>
-              `);
-              
-              infoWindowInstance.setPosition(newLocation);
-              infoWindowInstance.open(mapInstance);
-              
-              // We need to add event listeners after the InfoWindow is opened
-              window.google.maps.event.addListenerOnce(infoWindowInstance, 'domready', () => {
-                document.getElementById('confirm-location-update').addEventListener('click', () => {
-                  if (onLocationUpdate) {
+              <button id="confirm-location-update" class="location-confirm-button">Yes, Update</button>
+              <button id="cancel-location-update" class="location-cancel-button">Cancel</button>
+            </div>
+          `);
+          
+          infoWindowInstance.setPosition(newLocation);
+          infoWindowInstance.open(mapInstance);
+          
+          // We need to add event listeners after the InfoWindow is opened
+          window.google.maps.event.addListenerOnce(infoWindowInstance, 'domready', () => {
+            document.getElementById('confirm-location-update').addEventListener('click', () => {
+              if (onLocationUpdate) {
                     // Pass accuracy information for manual selection
                     onLocationUpdate({
                       ...newLocation,
@@ -64,17 +64,17 @@ const HospitalMap = ({ userLocation, hospitals, medicalStores, showMedicalStores
                       method: 'manual-map-selection',
                       address: address
                     });
-                  }
-                  infoWindowInstance.close();
-                  setIsLocationUpdateMode(false);
-                });
-                
-                document.getElementById('cancel-location-update').addEventListener('click', () => {
-                  infoWindowInstance.close();
-                  setIsLocationUpdateMode(false);
-                });
-              });
-            }
+              }
+              infoWindowInstance.close();
+              setIsLocationUpdateMode(false);
+            });
+            
+            document.getElementById('cancel-location-update').addEventListener('click', () => {
+              infoWindowInstance.close();
+              setIsLocationUpdateMode(false);
+            });
+          });
+        }
           } else {
             // Failed to geocode
             infoWindowInstance.setContent(`

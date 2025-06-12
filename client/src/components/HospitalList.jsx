@@ -33,13 +33,13 @@ const HospitalList = ({ hospitals, userLocation, selectedHospital, onHospitalSel
       }
     } else {
       // Original hospital badges
-      if (types && types.includes('hospital')) {
-        return <span className="hospital-badge">Hospital</span>;
-      } else if (types && types.includes('doctor')) {
-        return <span className="doctor-badge">Doctor</span>;
-      } else {
-        return <span className="medical-badge">Medical</span>;
-      }
+    if (types && types.includes('hospital')) {
+      return <span className="hospital-badge">Hospital</span>;
+    } else if (types && types.includes('doctor')) {
+      return <span className="doctor-badge">Doctor</span>;
+    } else {
+      return <span className="medical-badge">Medical</span>;
+    }
     }
   };
 
