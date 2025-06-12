@@ -3,6 +3,7 @@ import './App.css';
 import HospitalMap from './components/HospitalMap';
 import HospitalList from './components/HospitalList';
 import LoadingSpinner from './components/LoadingSpinner';
+import config from './config';
 
 function App() {
   const [userLocation, setUserLocation] = useState(null);
@@ -21,7 +22,7 @@ function App() {
     try {
       setLoading(true);
       // In development, this uses the Vite proxy configured in vite.config.js
-      const response = await fetch(`/api/hospitals?lat=${lat}&lng=${lng}`);
+      const response = await fetch(`${config.apiUrl}/api/hospitals?lat=${lat}&lng=${lng}`);
       
       if (!response.ok) {
         throw new Error("Failed to fetch nearby hospitals");
@@ -52,7 +53,7 @@ function App() {
   const fetchNearbyMedicalStores = useCallback(async (lat, lng) => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/medical-stores?lat=${lat}&lng=${lng}`);
+      const response = await fetch(`${config.apiUrl}/api/medical-stores?lat=${lat}&lng=${lng}`);
       
       if (!response.ok) {
         throw new Error("Failed to fetch nearby medical stores");
@@ -209,7 +210,7 @@ function App() {
       // Fallback to IP-based geolocation
       try {
         console.log("Falling back to IP-based geolocation...");
-        const response = await fetch('/api/ip-location');
+        const response = await fetch(`${config.apiUrl}/api/ip-location`);
         
         if (!response.ok) {
           throw new Error("IP location service failed");
@@ -304,7 +305,7 @@ function App() {
       setLocationLoading(true);
       
       // Geocode the address to coordinates
-      const response = await fetch(`/api/geocode-address?address=${encodeURIComponent(address)}`);
+      const response = await fetch(`${config.apiUrl}/api/geocode-address?address=${encodeURIComponent(address)}`);
       
       if (!response.ok) {
         throw new Error('Failed to geocode address');

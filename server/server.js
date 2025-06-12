@@ -8,7 +8,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors({
-  origin: ['http://localhost:5174', 'https://tmaps-six.vercel.app/'],
+  origin: ['http://localhost:5174', 'https://tmaps-six.vercel.app/', process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null].filter(Boolean),
   credentials: true
 }));
 app.use(express.json());
@@ -228,7 +228,13 @@ app.get('/api/ip-location', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-  console.log(`API key status: ${process.env.GOOGLE_MAPS_API_KEY ? 'Configured' : 'Missing'}`);
-});
+// For local development
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+    console.log(`API key status: ${process.env.GOOGLE_MAPS_API_KEY ? 'Configured' : 'Missing'}`);
+  });
+}
+
+// Export for Vercel
+module.exports = app;
