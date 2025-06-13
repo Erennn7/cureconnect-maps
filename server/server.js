@@ -125,6 +125,55 @@ app.get('/api/geocode-address', async (req, res) => {
   }
 });
 
+// Endpoint for reverse geocoding
+app.get('/api/geocode', async (req, res) => {
+  try {
+    const { latlng } = req.query;
+    
+    if (!latlng) {
+      return res.status(400).json({ error: 'Latitude and longitude are required' });
+    }
+    
+    const API_KEY = process.env.GOOGLE_MAPS_API_KEY;
+    
+    if (!API_KEY) {
+      return res.status(500).json({ error: 'Google Maps API key is not configured' });
+    }
+    
+    const response = await axios.get(
+      `https://maps.googleapis.com/maps/api/geocode/json`,
+      {
+        params: {
+          latlng: latlng,
+          key: API_KEY
+        }
+      }
+    );
+    
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error reverse geocoding:', error.message);
+    res.status(500).json({ error: 'Failed to perform reverse geocoding' });
+  }
+});
+
+// IP-based geolocation endpoint as fallback
+app.get('/api/ip-location', async (req, res) => {
+  try {
+    const response = await axios.get('https://ipapi.co/json/', { 
+      timeout: 5000
+    });
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching IP location:', error.message);
+    res.status(500).json({ 
+      error: 'Failed to determine location from IP',
+      latitude: 37.0902,
+      longitude: -95.7129
+    });
+  }
+});
+
 // For local development
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
